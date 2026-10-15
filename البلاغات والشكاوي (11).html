@@ -1,0 +1,1753 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>لوحة تحكم منظومة الشكاوى والبلاغات الحكومية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #092c4c;
+  --navy-dark: #051c33;
+  --blue: #0d5cab;
+  --blue-light: #e8f2fc;
+  --sidebar-w: 260px;
+  --bg: #f3f7fa;
+  --card-bg: #ffffff;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --green: #10b981;
+  --green-bg: #ecfdf5;
+  --red: #ef4444;
+  --red-bg: #fef2f2;
+  --orange: #f59e0b;
+  --orange-bg: #fffbeb;
+  --purple: #8b5cf6;
+  --purple-bg: #f5f3ff;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 25px -3px rgba(9,44,76,0.1), 0 4px 6px -4px rgba(9,44,76,0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Cairo', Tahoma, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+button, input, select, textarea { font-family: inherit; font-size: inherit; }
+button { cursor: pointer; transition: all 0.2s ease; }
+
+/* Layout */
+.layout { display: flex; width: 100vw; min-height: 100vh; }
+
+/* Sidebar */
+aside.sidebar {
+  width: var(--sidebar-w);
+  background: var(--navy-dark);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  z-index: 40;
+}
+
+.brand-header {
+  padding: 24px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.15);
+}
+.eagle-badge {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #0d5cab, #092c4c);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  box-shadow: var(--shadow-sm);
+}
+.brand-title {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.brand-subtitle {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.nav-group {
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.nav-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  padding: 8px 12px 4px;
+  font-weight: 700;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: #cbd5e1;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: right;
+  width: 100%;
+}
+.nav-item:hover {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+}
+.nav-item.active {
+  background: var(--blue);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(13,92,171,0.35);
+}
+.nav-item .icon { font-size: 18px; display: inline-flex; }
+.nav-badge {
+  margin-right: auto;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0,0,0,0.2);
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #1e3a5f;
+  color: #38bdf8;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 16px;
+  border: 1px solid rgba(56,189,248,0.25);
+}
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-size: 13px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-role { font-size: 11px; color: #94a3b8; }
+
+/* Main Content Area */
+main.main-viewport {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+/* Top App Bar */
+header.top-bar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--line);
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  box-shadow: var(--shadow-sm);
+}
+.header-actions { display: flex; align-items: center; gap: 14px; }
+.global-search {
+  position: relative;
+  width: 380px;
+}
+.global-search input {
+  width: 100%;
+  padding: 10px 40px 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: #f8fafc;
+  outline: none;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.global-search input:focus {
+  border-color: var(--blue);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(13,92,171,0.12);
+}
+.search-icon-pos {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  font-size: 17px;
+  position: relative;
+}
+.icon-btn:hover { background: var(--blue-light); color: var(--blue); border-color: var(--blue); }
+.dot-alert {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.portal-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--green-bg);
+  color: var(--green);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid #a7f3d0;
+}
+.live-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 1.8s infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+/* Page Body */
+.dashboard-container {
+  padding: 28px 32px 60px;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Section Header */
+.page-title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.page-title-bar h1 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.page-title-bar p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.page-controls {
+  display: flex;
+  gap: 10px;
+}
+.btn-primary {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(13,92,171,0.25);
+}
+.btn-primary:hover { background: #0b4e91; }
+.btn-secondary {
+  background: #ffffff;
+  color: var(--navy);
+  border: 1px solid var(--line-strong);
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-secondary:hover { background: #f8fafc; border-color: var(--navy); }
+
+/* KPI Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.kpi-card {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: var(--line);
+}
+.kpi-card.blue::after { background: var(--blue); }
+.kpi-card.orange::after { background: var(--orange); }
+.kpi-card.green::after { background: var(--green); }
+.kpi-card.purple::after { background: var(--purple); }
+
+.kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.kpi-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+}
+.kpi-icon-box.blue { background: var(--blue-light); color: var(--blue); }
+.kpi-icon-box.orange { background: var(--orange-bg); color: var(--orange); }
+.kpi-icon-box.green { background: var(--green-bg); color: var(--green); }
+.kpi-icon-box.purple { background: var(--purple-bg); color: var(--purple); }
+
+.kpi-title { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+.kpi-value { font-size: 28px; font-weight: 800; color: var(--navy); margin-bottom: 8px; line-height: 1.2; }
+.kpi-trend {
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.trend-up { color: var(--green); }
+.trend-down { color: var(--red); }
+.trend-neutral { color: var(--text-muted); }
+
+/* Distribution / Analytics Row */
+.analytics-row {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.card-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+.card-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.card-panel-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.badge-count {
+  font-size: 12px;
+  font-weight: 600;
+  background: #f1f5f9;
+  color: var(--text-muted);
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+/* Sector Breakdown Bars */
+.sector-list { display: flex; flex-direction: column; gap: 16px; }
+.sector-item { display: flex; flex-direction: column; gap: 6px; }
+.sector-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+.sector-name { display: flex; align-items: center; gap: 8px; }
+.progress-bg {
+  width: 100%;
+  height: 9px;
+  background: #f1f5f9;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Quick Urgency / Speed Panel */
+.urgency-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.urgency-box {
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+}
+.urgency-box.critical {
+  background: var(--red-bg);
+  border-color: #fecaca;
+}
+.urgency-box.critical .ub-title { color: #991b1b; }
+.urgency-box.critical .ub-num { color: #b91c1c; }
+
+.ub-title { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+.ub-num { font-size: 22px; font-weight: 800; color: var(--navy); }
+
+/* Complaints Table Section */
+.table-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.table-controls {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-bottom: 1px solid var(--line);
+  background: #fafcff;
+}
+.filters-wrap {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.filter-select {
+  padding: 8px 14px;
+  border-radius: 9px;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+}
+.filter-select:focus { border-color: var(--blue); }
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+table.complaints-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: right;
+  font-size: 13.5px;
+}
+table.complaints-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 700;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+table.complaints-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+  color: var(--text);
+  white-space: nowrap;
+}
+table.complaints-table tr:hover td {
+  background: #f9fbfe;
+}
+
+/* Badges & Tags */
+.badge-priority {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.badge-priority.urgent {
+  background: var(--red-bg);
+  color: var(--red);
+  border: 1px solid #fca5a5;
+}
+.badge-priority.normal {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.badge-status.new {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+.badge-status.investigating {
+  background: var(--orange-bg);
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+.badge-status.resolved {
+  background: var(--green-bg);
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.action-btn-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.action-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  color: var(--navy);
+}
+.action-btn:hover { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+.action-btn.primary { background: var(--navy); color: #fff; border-color: var(--navy); }
+.action-btn.primary:hover { background: var(--blue); }
+
+/* Modal & Slide-over Details */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 44, 76, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 99;
+  display: none;
+  justify-content: flex-end;
+  animation: fadeIn 0.2s ease-out;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.slide-drawer {
+  width: 620px;
+  max-width: 90vw;
+  background: #ffffff;
+  height: 100%;
+  box-shadow: -10px 0 35px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideIn 0.25s ease-out;
+}
+@keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+
+.drawer-header {
+  padding: 22px 28px;
+  background: var(--navy-dark);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.drawer-title-wrap h2 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.drawer-title-wrap p { font-size: 12px; color: #94a3b8; }
+.close-drawer-btn {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 18px;
+  display: grid;
+  place-items: center;
+}
+.close-drawer-btn:hover { background: rgba(255,255,255,0.2); }
+
+.drawer-body {
+  padding: 24px 28px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.detail-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px solid var(--blue-light);
+  padding-bottom: 6px;
+}
+
+.info-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.info-field-box {
+  background: #f8fafc;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+.info-field-label { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 3px; }
+.info-field-value { font-size: 13.5px; font-weight: 700; color: var(--text); }
+
+.complaint-content-box {
+  background: #fafcff;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  padding: 18px;
+  line-height: 1.8;
+  font-size: 14px;
+  color: #1e3a5f;
+}
+
+.attachments-list {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.attachment-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.attachment-card:hover {
+  border-color: var(--blue);
+  background: var(--blue-light);
+}
+
+/* Timeline */
+.timeline-stepper {
+  position: relative;
+  padding-right: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.timeline-stepper::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  right: 10px;
+  width: 2px;
+  background: var(--line-strong);
+}
+.timeline-node {
+  position: relative;
+}
+.timeline-node::before {
+  content: '';
+  position: absolute;
+  right: -28px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--line-strong);
+  z-index: 2;
+}
+.timeline-node.done::before {
+  border-color: var(--green);
+  background: var(--green);
+}
+.timeline-node.active::before {
+  border-color: var(--blue);
+  background: var(--blue);
+  box-shadow: 0 0 0 4px rgba(13,92,171,0.2);
+}
+.timeline-time { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+.timeline-text { font-size: 13.5px; font-weight: 700; color: var(--navy); }
+.timeline-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* Status Update Action Drawer Bar */
+.drawer-footer {
+  padding: 18px 28px;
+  background: #f8fafc;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Referral Modal */
+.simple-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  place-items: center;
+  z-index: 120;
+  padding: 20px;
+}
+.simple-modal-card {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  padding: 26px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Toast */
+.toast-notice {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  background: var(--navy-dark);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  display: none;
+  z-index: 200;
+  border-right: 4px solid var(--green);
+}
+
+/* Responsive adjustments */
+@media(max-width: 1200px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .analytics-row { grid-template-columns: 1fr; }
+}
+@media(max-width: 900px) {
+  aside.sidebar {
+    width: 72px;
+  }
+  .brand-title, .brand-subtitle, .nav-item span:not(.icon), .nav-badge, .nav-label, .user-info {
+    display: none;
+  }
+  .brand-header { justify-content: center; padding: 16px 0; }
+  .nav-item { justify-content: center; padding: 12px 0; }
+  .global-search { width: 220px; }
+  .dashboard-container { padding: 18px; }
+}
+@media(max-width: 650px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  aside.sidebar { display: none; }
+  .slide-drawer { width: 100%; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand-header">
+      <div class="eagle-badge">🦅</div>
+      <div>
+        <div class="brand-title">منظومة الشكاوى الموحدة</div>
+        <div class="brand-subtitle">مجلس الوزراء - لوحة التحكم</div>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">لوحة الإشراف</div>
+      <button class="nav-item active" onclick="switchNav('home', this)">
+        <span class="icon">📊</span>
+        <span>الرئيسية</span>
+      </button>
+      <button class="nav-item" onclick="switchNav('inbox', this)">
+        <span class="icon">📥</span>
+        <span>البلاغات الواردة</span>
+        <span class="nav-badge" id="badge-inbox">1,482</span>
+      </button>
+      <button class="nav-item" onclick="switchNav('urgent', this)">
+        <span class="icon">🚨</span>
+        <span>الشكاوى العاجلة</span>
+        <span class="nav-badge" style="background:#dc2626">47</span>
+      </button>
+      <button class="nav-item" onclick="switchNav('followup', this)">
+        <span class="icon">⏳</span>
+        <span>متابعة التنفيذ</span>
+      </button>
+
+      <div class="nav-label" style="margin-top:14px;">الإدارة والتحليلات</div>
+      <button class="nav-item" onclick="switchNav('reports', this)">
+        <span class="icon">📈</span>
+        <span>التقارير والتحليلات</span>
+      </button>
+      <button class="nav-item" onclick="switchNav('settings', this)">
+        <span class="icon">⚙️</span>
+        <span>إعدادات النظام</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="avatar">م.ع</div>
+      <div class="user-info">
+        <div class="user-name">د. محمود عبد العزيز</div>
+        <div class="user-role">مدير عام المتابعة المركزية</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Viewport -->
+  <main class="main-viewport">
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="global-search">
+        <span class="search-icon-pos">🔍</span>
+        <input type="text" id="searchInput" placeholder="ابحث برقم البلاغ، اسم الشاكي، أو المحافظة..." oninput="handleSearch(this.value)">
+      </div>
+
+      <div class="header-actions">
+        <div class="portal-status">
+          <div class="live-indicator"></div>
+          <span>النظام مباشر ومستقر</span>
+        </div>
+        <button class="icon-btn" title="التنبيهات" onclick="showToast('لديك 3 بلاغات عاجلة تتطلب تدخلاً فورياً')">
+          🔔
+          <span class="dot-alert"></span>
+        </button>
+        <button class="btn-primary" onclick="exportData()">
+          <span>📥 تصدير التقرير اليومي</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Content Container -->
+    <div class="dashboard-container">
+      
+      <!-- Page Header -->
+      <div class="page-title-bar">
+        <div>
+          <h1 id="viewHeading">مؤشرات الأداء ومتابعة البلاغات</h1>
+          <p id="viewSub">نظرة عامة لحظية على موقف الشكاوى الواردة وتوزيعها الإقليمي والقطاعي</p>
+        </div>
+        <div class="page-controls">
+          <button class="btn-secondary" onclick="resetFilters()">🔄 تحديث البيانات</button>
+          <button class="btn-primary" onclick="openReferralModal(null, true)">➕ تسجيل بلاغ هاتفي استثنائي</button>
+        </div>
+      </div>
+
+      <!-- KPI Cards Row -->
+      <section class="kpi-grid">
+        <!-- KPI 1 -->
+        <div class="kpi-card blue">
+          <div class="kpi-header">
+            <span class="kpi-title">إجمالي البلاغات المقدمة</span>
+            <div class="kpi-icon-box blue">📋</div>
+          </div>
+          <div class="kpi-value" id="kpi-total">12,840</div>
+          <div class="kpi-trend trend-up">
+            <span>↑ 8.4%</span>
+            <span style="color:var(--text-muted); font-weight:normal;">مقارنة بالشهر السابق</span>
+          </div>
+        </div>
+
+        <!-- KPI 2 -->
+        <div class="kpi-card orange">
+          <div class="kpi-header">
+            <span class="kpi-title">بلاغات قيد المعالجة / التحقيق</span>
+            <div class="kpi-icon-box orange">⏳</div>
+          </div>
+          <div class="kpi-value" id="kpi-pending">1,245</div>
+          <div class="kpi-trend trend-down">
+            <span>↓ 3.2%</span>
+            <span style="color:var(--text-muted); font-weight:normal;">انخفاض في تراكم الطلبات</span>
+          </div>
+        </div>
+
+        <!-- KPI 3 -->
+        <div class="kpi-card green">
+          <div class="kpi-header">
+            <span class="kpi-title">الشكاوى المغلقة / المكتملة</span>
+            <div class="kpi-icon-box green">✅</div>
+          </div>
+          <div class="kpi-value" id="kpi-resolved">11,595</div>
+          <div class="kpi-trend trend-up">
+            <span>↑ 94.2%</span>
+            <span style="color:var(--text-muted); font-weight:normal;">نسبة الحسم الإجمالية</span>
+          </div>
+        </div>
+
+        <!-- KPI 4 -->
+        <div class="kpi-card purple">
+          <div class="kpi-header">
+            <span class="kpi-title">متوسط زمن الاستجابة</span>
+            <div class="kpi-icon-box purple">⚡</div>
+          </div>
+          <div class="kpi-value">24 ساعة</div>
+          <div class="kpi-trend trend-up">
+            <span>↑ 6 ساعات أسرع</span>
+            <span style="color:var(--text-muted); font-weight:normal;">من الهدف القياسي</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Distribution & Categories Analytics Row -->
+      <section class="analytics-row">
+        <!-- Sectors Breakdown -->
+        <div class="card-panel">
+          <div class="card-panel-header">
+            <div class="card-panel-title">
+              <span>🏛️ تصنيف الشكاوى وتوزيعها حسب القطاعات الأكثر تلقياً</span>
+            </div>
+            <span class="badge-count">آخر 30 يوماً</span>
+          </div>
+
+          <div class="sector-list" id="sectorList">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Urgency & Distribution Overview -->
+        <div class="card-panel">
+          <div class="card-panel-header">
+            <div class="card-panel-title">
+              <span>🚨 كفاءة التعامل والتدخل السريع</span>
+            </div>
+          </div>
+
+          <div class="urgency-stats">
+            <div class="urgency-box critical">
+              <span class="ub-title">بلاغات حرجة عاجلة</span>
+              <span class="ub-num" id="stat-urgent-count">18 بلاغ</span>
+            </div>
+            <div class="urgency-box">
+              <span class="ub-title">تمت إحالتها للوزارات</span>
+              <span class="ub-num">89%</span>
+            </div>
+          </div>
+
+          <div style="background: #f8fafc; border-radius: 12px; padding: 14px; border: 1px solid var(--line);">
+            <div style="font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 8px;">📌 أعلى المحافظات تسجيلاً:</div>
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:6px;">
+              <span>القاهرة الكبرى</span>
+              <strong>38% (4,880)</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:6px;">
+              <span>الجيزة</span>
+              <strong>24% (3,081)</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:6px;">
+              <span>الإسكندرية</span>
+              <strong>18% (2,311)</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:12.5px;">
+              <span>الدقهلية وباقي المحافظات</span>
+              <strong>20% (2,568)</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Complaints Management Table -->
+      <section class="table-panel">
+        <div class="table-controls">
+          <div>
+            <h3 style="font-size: 17px; font-weight: 800; color: var(--navy); margin-bottom: 2px;">سجل إدارة البلاغات والشكاوى الواردة</h3>
+            <span style="font-size: 12.5px; color: var(--text-muted);" id="tableCountSummary">عرض 8 من أصل 8 بلاغات معروضة</span>
+          </div>
+
+          <div class="filters-wrap">
+            <select class="filter-select" id="filterStatus" onchange="applyFilters()">
+              <option value="ALL">جميع الحالات</option>
+              <option value="جديد">جديد</option>
+              <option value="جاري الفحص">جاري الفحص</option>
+              <option value="تم الحل">تم الحل</option>
+            </select>
+
+            <select class="filter-select" id="filterPriority" onchange="applyFilters()">
+              <option value="ALL">كل درجات الأهمية</option>
+              <option value="عاجل">عاجل فقط</option>
+              <option value="عادي">عادي</option>
+            </select>
+
+            <select class="filter-select" id="filterGov" onchange="applyFilters()">
+              <option value="ALL">جميع المحافظات</option>
+              <option value="القاهرة">القاهرة</option>
+              <option value="الجيزة">الجيزة</option>
+              <option value="الإسكندرية">الإسكندرية</option>
+              <option value="الشرقية">الشرقية</option>
+              <option value="الدقهلية">الدقهلية</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="complaints-table">
+            <thead>
+              <tr>
+                <th>رقم البلاغ</th>
+                <th>اسم الشاكي</th>
+                <th>تصنيف الشكوى</th>
+                <th>المحافظة / المنطقة</th>
+                <th>تاريخ التقديم</th>
+                <th>درجة الأهمية</th>
+                <th>حالة البلاغ</th>
+                <th style="text-align: center;">إجراءات المعالجة</th>
+              </tr>
+            </thead>
+            <tbody id="complaintsTableBody">
+              <!-- Rendered via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- Details & Quick Preview Slide-out Drawer -->
+<div class="modal-overlay" id="detailDrawerOverlay" onclick="closeDrawerOnOutside(event)">
+  <div class="slide-drawer" id="slideDrawer">
+    <div class="drawer-header">
+      <div class="drawer-title-wrap">
+        <h2 id="drwId">تفاصيل البلاغ #...</h2>
+        <p id="drwSubtitle">بيانات الشكوى ومسار التحقيق والمرفقات</p>
+      </div>
+      <button class="close-drawer-btn" onclick="closeDetailDrawer()">✕</button>
+    </div>
+
+    <div class="drawer-body" id="drawerBody">
+      <!-- Section 1: Citizen and Location info -->
+      <div>
+        <div class="detail-section-title">👤 بيانات مقدم البلاغ والموقع</div>
+        <div class="info-cards-grid">
+          <div class="info-field-box">
+            <div class="info-field-label">اسم الشاكي</div>
+            <div class="info-field-value" id="drwCitizen">--</div>
+          </div>
+          <div class="info-field-box">
+            <div class="info-field-label">الرقم القومي / الهاتف</div>
+            <div class="info-field-value" id="drwContact">--</div>
+          </div>
+          <div class="info-field-box">
+            <div class="info-field-label">المحافظة والمنطقة</div>
+            <div class="info-field-value" id="drwLocation">--</div>
+          </div>
+          <div class="info-field-box">
+            <div class="info-field-label">درجة الأولوية والتصنيف</div>
+            <div class="info-field-value" id="drwCategory">--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Complaint Body -->
+      <div>
+        <div class="detail-section-title">📝 نص الشكوى والبلاغ المقدم</div>
+        <div class="complaint-content-box" id="drwContent">
+          --
+        </div>
+      </div>
+
+      <!-- Section 3: Attachments -->
+      <div>
+        <div class="detail-section-title">📎 المرفقات والمستندات الثبوتية</div>
+        <div class="attachments-list" id="drwAttachments">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Section 4: Resolution Timeline -->
+      <div>
+        <div class="detail-section-title">⏱️ التاسك تايم لاين (Timeline) لمراحل حل الشكوى</div>
+        <div class="timeline-stepper" id="drwTimeline">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:12px; font-weight:700;">تغيير الحالة:</span>
+        <select class="filter-select" id="drawerStatusSelect" onchange="updateSelectedStatus(this.value)">
+          <option value="جديد">جديد</option>
+          <option value="جاري الفحص">جاري الفحص</option>
+          <option value="تم الحل">تم الحل</option>
+        </select>
+      </div>
+
+      <div style="display:flex; gap:8px;">
+        <button class="action-btn" onclick="openReferralModal(currentActiveComplaintId)">
+          🔄 إحالة للجهة المختصة
+        </button>
+        <button class="action-btn primary" onclick="closeDetailDrawer()">
+          إغلاق المعاينة
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Referral Modal -->
+<div class="simple-modal" id="referralModal">
+  <div class="simple-modal-card">
+    <h3 style="font-size:18px; font-weight:800; color:var(--navy); margin-bottom:8px;">إحالة الشكوى لجهة الاختصاص</h3>
+    <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">قم باختيار الوزارة أو الهيئة المحلية المعنية لاتخاذ الإجراء العاجل.</p>
+
+    <div style="margin-bottom:14px;">
+      <label style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;">الجهة المحال إليها:</label>
+      <select class="filter-select" id="refEntity" style="width:100%;">
+        <option>وزارة الإسكان والمرافق والمجتمعات العمرانية</option>
+        <option>وزارة النقل والهيئة العامة للطرق والكباري</option>
+        <option>وزارة التنمية المحلية - محافظة القاهرة</option>
+        <option>وزارة الصحة والسكان - قطاع الرقابة</option>
+        <option>الشركة القابضة لمياه الشرب والصرف الصحي</option>
+        <option>وزارة الكهرباء والطاقة المتجددة</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:18px;">
+      <label style="display:block; font-size:12px; font-weight:700; margin-bottom:6px;">ملاحظات وتعليمات الإحالة:</label>
+      <textarea id="refNote" rows="3" class="filter-select" style="width:100%; resize:vertical;" placeholder="يرجى إفادتنا بنتائج المعاينة الميدانية خلال 48 ساعة..."></textarea>
+    </div>
+
+    <div style="display:flex; justify-content:flex-end; gap:10px;">
+      <button class="btn-secondary" onclick="closeReferralModal()">إلغاء</button>
+      <button class="btn-primary" onclick="confirmReferral()">تأكيد الإحالة والتوجيه</button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Toast -->
+<div class="toast-notice" id="toastNotice"></div>
+
+<script>
+// Mock initial complaints dataset
+let complaints = [
+  {
+    id: 'EG-90412',
+    name: 'المهندس أحمد ممدوح السعيد',
+    phone: '01098765432',
+    nid: '28910140102941',
+    category: 'المرافق',
+    categoryIcon: '💧',
+    gov: 'القاهرة',
+    area: 'مدينة نصر - الحي السابع',
+    date: '2025-05-12 09:30 ص',
+    priority: 'عاجل',
+    status: 'جديد',
+    body: 'انفجار خط مياه الشرب الرئيسي بشارع الطيران تقاطع الحي السابع مما أدى إلى غمر الشوارع وتعطل حركة المرور بالكامل وانقطاع الخدمة عن أكثر من 15 عقاراً سكنياً منذ الصباح الباكر.',
+    attachments: [
+      { name: 'صورة_تسرب_المياه.jpg', size: '2.4 MB', type: 'image' },
+      { name: 'تقرير_موقع_الحادث.pdf', size: '1.1 MB', type: 'doc' }
+    ],
+    timeline: [
+      { step: 'تسجيل البلاغ عبر البوابة', time: '12 مايو - 09:30 ص', done: true, sub: 'تم توثيق البلاغ برقم تتبعي آلي وإرسال رسالة نصية للشاكي.' },
+      { step: 'المراجعة والتحقق الأولي', time: '12 مايو - 09:45 ص', done: true, sub: 'قام مسؤول غرفة العمليات بمراجعة دقة البيانات والصور المرفقة.' },
+      { step: 'إحالة لغرفة طوارئ مياه القاهرة', time: '12 مايو - 10:00 ص', active: true, sub: 'بانتظار تحرك فرق الصيانة الميدانية للموقع.' },
+      { step: 'تنفيذ أعمال الإصلاح الميداني', time: 'متوقع خلال ساعتين', done: false, sub: 'إعادة ضخ المياه والتأكد من فتح الشارع.' },
+      { step: 'إغلاق البلاغ وتقييم الرضا', time: 'معلق', done: false, sub: 'الاتصال بالمواطن للتحقق من إتمام الحل.' }
+    ]
+  },
+  {
+    id: 'EG-90388',
+    name: 'سارة عبد الرحمن محمود',
+    phone: '01123456789',
+    nid: '29503120101822',
+    category: 'الطرق',
+    categoryIcon: '🛣️',
+    gov: 'الجيزة',
+    area: 'شارع فيصل الرئيسي - محطة المساحة',
+    date: '2025-05-11 02:15 م',
+    priority: 'عاجل',
+    status: 'جاري الفحص',
+    body: 'وجود حفرة عميقة غير مغطاة ناتجة عن أعمال رصف سابقة بدون إشارات تحذيرية، تسببت بالفعل في إتلاف إطارات عدة سيارات وتشكل خطراً جسيماً على سلامة المارة ليلاً.',
+    attachments: [
+      { name: 'معاينة_الحفرة_بالطريق.png', size: '3.8 MB', type: 'image' }
+    ],
+    timeline: [
+      { step: 'تسجيل البلاغ', time: '11 مايو - 02:15 م', done: true, sub: 'استلام البلاغ وتصنيفه كخطر داهم على السلامة المرورية.' },
+      { step: 'الإحالة لهيئة الطرق بالجيزة', time: '11 مايو - 03:00 م', done: true, sub: 'توجيه أمر فحص لحي بولاق الدكرور وإدارة صيانة الطرق.' },
+      { step: 'معاينة ميدانية وفرض سياج أمني', time: '11 مايو - 06:20 م', done: true, sub: 'تم وضع مصدات تحذيرية مؤقتة حول الموقع.' },
+      { step: 'الرصف وإعادة الشيء لأصله', time: 'جاري العمل الآن', active: true, sub: 'المقاول المختص يقوم بصب الخرسانة وإعادة السفلتة.' },
+      { step: 'المعاينة النهائية والإغلاق', time: 'معلق', done: false, sub: 'إرسال صور الإنجاز للأمانة العامة.' }
+    ]
+  },
+  {
+    id: 'EG-90350',
+    name: 'الحاج إبراهيم خليل النجار',
+    phone: '01224567890',
+    nid: '26005200100412',
+    category: 'النظافة',
+    categoryIcon: '🧹',
+    gov: 'الإسكندرية',
+    area: 'حي المنتزه - سيدي بشر قبلي',
+    date: '2025-05-11 11:00 ص',
+    priority: 'عادي',
+    status: 'تم الحل',
+    body: 'تراكم مخلفات هدم مباني وقمامة على ناصية مدرسة الأمل الابتدائية، مما يعيق حركة التلاميذ وأولياء الأمور وينبعث منها روائح كريهة.',
+    attachments: [
+      { name: 'مخلفات_بجوار_المدرسة.jpg', size: '1.9 MB', type: 'image' },
+      { name: 'إيصال_حملة_النظافة.pdf', size: '850 KB', type: 'doc' }
+    ],
+    timeline: [
+      { step: 'تسجيل البلاغ', time: '11 مايو - 11:00 ص', done: true, sub: 'استلام البلاغ إلكترونياً.' },
+      { step: 'إخطار هيئة النظافة والتجميل', time: '11 مايو - 12:30 م', done: true, sub: 'توجيه لودر وسيارات رفع حمولة 20 طن.' },
+      { step: 'رفع المخلفات وتطهير المكان', time: '11 مايو - 05:00 م', done: true, sub: 'تمت إزالة التراكمات ورش المكان بالمطهرات.' },
+      { step: 'التحقق مع الشاكي وإغلاق الطلب', time: '12 مايو - 09:00 ص', done: true, sub: 'أكد المواطن هاتفياً نظافة الموقع بالكامل.' }
+    ]
+  },
+  {
+    id: 'EG-90299',
+    name: 'د. منى مصطفى كامل',
+    phone: '01001239874',
+    nid: '28807180103456',
+    category: 'الصحة',
+    categoryIcon: '🏥',
+    gov: 'الشرقية',
+    area: 'الزقازيق - قسم ثان',
+    date: '2025-05-10 08:45 م',
+    priority: 'عاجل',
+    status: 'جاري الفحص',
+    body: 'شكوى من تعطل جهاز الأشعة المقطعية بمستشفى الزقازيق العام وتأجيل مواعيد الحالات الطارئة الواردة لقسم الاستقبال ونقلهم لمستشفيات بديلة.',
+    attachments: [
+      { name: 'تذكرة_دخول_المستشفى.jpg', size: '1.5 MB', type: 'image' }
+    ],
+    timeline: [
+      { step: 'استلام بلاغ طارئ', time: '10 مايو - 08:45 م', done: true, sub: 'إدراج الشكوى ضمن الأولويات القصوى (قطاع الرعاية الحرجة).' },
+      { step: 'إخطار وكيل وزارة الصحة', time: '10 مايو - 09:15 م', done: true, sub: 'تشكيل لجنة صيانة فورية واستدعاء مهندس الوكيل الطبي.' },
+      { step: 'توريد قطعة الغيار اللازمة', time: '11 مايو - 04:00 م', active: true, sub: 'جاري تركيب الشريحة الإلكترونية الخاصة بمولد الأشعة.' },
+      { step: 'إعادة التشغيل والاختبار', time: 'معلق', done: false, sub: 'التأكد من جاهزية الجهاز لاستقبال الحوادث.' }
+    ]
+  },
+  {
+    id: 'EG-90210',
+    name: 'عصام عبد الفتاح الشامي',
+    phone: '01198712345',
+    nid: '27609090100789',
+    category: 'المرافق',
+    categoryIcon: '⚡',
+    gov: 'الدقهلية',
+    area: 'المنصورة - حي توريل',
+    date: '2025-05-10 10:20 ص',
+    priority: 'عادي',
+    status: 'جديد',
+    body: 'تذبذب شديد ومستمر في جهد التيار الكهربائي وانقطاعات متكررة تسببت في تلف بعض الأجهزة الكهربائية المنزلية بالعقار رقم 14.',
+    attachments: [
+      { name: 'تقرير_فني_تلف_الأجهزة.pdf', size: '2.1 MB', type: 'doc' }
+    ],
+    timeline: [
+      { step: 'تسجيل البلاغ', time: '10 مايو - 10:20 ص', done: true, sub: 'قيد البلاغ بقطاع كهرباء شمال الدلتا.' },
+      { step: 'جدولة مراجعة المحول', time: 'قيد الانتظار', active: true, sub: 'تكليف فني القياس بفحص كشك التوزيع بالمنطقة.' }
+    ]
+  },
+  {
+    id: 'EG-90184',
+    name: 'نجلاء سمير يوسف',
+    phone: '01555123489',
+    nid: '29202020102144',
+    category: 'الطرق',
+    categoryIcon: '🛣️',
+    gov: 'القاهرة',
+    area: 'مصر الجديدة - ميدان الحجاز',
+    date: '2025-05-09 04:10 م',
+    priority: 'عادي',
+    status: 'تم الحل',
+    body: 'تعطل أعمدة الإنارة العامة بالجزيرة الوسطى بشارع الحجاز مما يجعل الرؤية شبه معدومة ليلاً عند عبور المشاة.',
+    attachments: [
+      { name: 'صورة_الشارع_ليلاً.jpg', size: '1.2 MB', type: 'image' }
+    ],
+    timeline: [
+      { step: 'تسجيل البلاغ', time: '09 مايو - 04:10 م', done: true, sub: 'إخطار قسم إنارة شرق القاهرة.' },
+      { step: 'الصيانة واستبدال الكشافات', time: '10 مايو - 11:00 ص', done: true, sub: 'تم تغيير 8 كشافات ليد وإصلاح كابل التغذية الأرضي.' },
+      { step: 'حسم البلاغ', time: '10 مايو - 01:00 م', done: true, sub: 'تم الحل بنجاح.' }
+    ]
+  },
+  {
+    id: 'EG-90111',
+    name: 'خالد عبد الوهاب جاد',
+    phone: '01065432190',
+    nid: '28108150101990',
+    category: 'الصحة',
+    categoryIcon: '🏥',
+    gov: 'الجيزة',
+    area: 'الهرم - شارع العريش',
+    date: '2025-05-08 01:00 م',
+    priority: 'عاجل',
+    status: 'تم الحل',
+    body: 'شكوى من وجود صيدلية تقوم ببيع أدوية مجهولة المصدر ومنتهية الصلاحية دون وجود صيدلي مرخص.',
+    attachments: [
+      { name: 'فاتورة_شراء_غير_نظامية.jpg', size: '980 KB', type: 'image' }
+    ],
+    timeline: [
+      { step: 'استلام البلاغ', time: '08 مايو - 01:00 م', done: true, sub: 'إحالة عاجلة للتفتيش الصيدلي وهيئة الدواء.' },
+      { step: 'شن حملة تفتيشية مفاجئة', time: '08 مايو - 06:30 م', done: true, sub: 'ضبط وتحريز الأدوية المخالفة وتحرير محضر رسمي.' },
+      { step: 'اتخاذ الإجراءات القانونية', time: '09 مايو - 10:00 ص', done: true, sub: 'إغلاق المنشأة وإحالة الواقعة للنيابة المختصة.' }
+    ]
+  },
+  {
+    id: 'EG-90050',
+    name: 'حسام الدين فؤاد',
+    phone: '01211223344',
+    nid: '28404040101112',
+    category: 'النظافة',
+    categoryIcon: '🧹',
+    gov: 'القاهرة',
+    area: 'حلوان - مساكن الزلزال',
+    date: '2025-05-07 05:40 م',
+    priority: 'عادي',
+    status: 'جاري الفحص',
+    body: 'عدم انتظام مرور سيارات متعهدي جمع القمامة المنزلية منذ أكثر من أسبوعين مما يجبر السكان على التخلص منها في أراضي الفضاء.',
+    attachments: [
+      { name: 'صورة_تجمع_القمامة.jpg', size: '2.8 MB', type: 'image' }
+    ],
+    timeline: [
+      { step: 'تسجيل البلاغ', time: '07 مايو - 05:40 م', done: true, sub: 'استلام الشكوى ونقلها لحي حلوان.' },
+      { step: 'استدعاء المتعهد ومراجعته', time: '09 مايو - 11:00 ص', done: true, sub: 'توجيه إنذار للمتعهد لالتزام جدول المواعيد.' },
+      { step: 'متابعة انتظام الخدمة الميدانية', time: 'جاري التقييم', active: true, sub: 'فريق التفتيش يتابع خط السير اليومي.' }
+    ]
+  }
+];
+
+const sectorsData = [
+  { name: 'المرافق (مياه، كهرباء، غاز)', icon: '💧', count: 4820, percent: 38, color: '#0d5cab' },
+  { name: 'الطرق والكباري والنقل', icon: '🛣️', count: 3210, percent: 25, color: '#f59e0b' },
+  { name: 'النظافة وتدوير المخلفات', icon: '🧹', count: 2570, percent: 20, color: '#10b981' },
+  { name: 'الصحة والرقابة الدوائية', icon: '🏥', count: 2240, percent: 17, color: '#ef4444' }
+];
+
+let currentActiveComplaintId = null;
+
+// Initialize Dashboard
+function init() {
+  renderSectors();
+  renderComplaintsTable(complaints);
+  updateKPIs();
+}
+
+// Render Sector Breakdown
+function renderSectors() {
+  const container = document.getElementById('sectorList');
+  container.innerHTML = sectorsData.map(sec => `
+    <div class="sector-item">
+      <div class="sector-meta">
+        <span class="sector-name">
+          <span>${sec.icon}</span>
+          <span>${sec.name}</span>
+        </span>
+        <span style="color:var(--navy); font-weight:700;">${sec.count.toLocaleString('ar-EG')} بلاغ (${sec.percent}%)</span>
+      </div>
+      <div class="progress-bg">
+        <div class="progress-fill" style="width: ${sec.percent}%; background: ${sec.color};"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Update KPI Counts
+function updateKPIs() {
+  const total = complaints.length;
+  const pending = complaints.filter(c => c.status === 'جاري الفحص' || c.status === 'جديد').length;
+  const resolved = complaints.filter(c => c.status === 'تم الحل').length;
+  const urgent = complaints.filter(c => c.priority === 'عاجل' && c.status !== 'تم الحل').length;
+
+  document.getElementById('stat-urgent-count').textContent = urgent + ' بلاغات';
+}
+
+// Render Complaints Table
+function renderComplaintsTable(data) {
+  const tbody = document.getElementById('complaintsTableBody');
+  document.getElementById('tableCountSummary').textContent = `عرض ${data.length} من أصل ${complaints.length} بلاغ مسجل`;
+
+  if (data.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align:center; padding: 48px; color:var(--text-muted);">
+          🔍 لا توجد بلاغات تطابق معايير البحث والفلترة المحددة.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = data.map(item => {
+    const isUrgent = item.priority === 'عاجل';
+    let statusClass = 'new';
+    if (item.status === 'جاري الفحص') statusClass = 'investigating';
+    if (item.status === 'تم الحل') statusClass = 'resolved';
+
+    return `
+      <tr>
+        <td style="font-weight:700; color:var(--blue);">${item.id}</td>
+        <td>
+          <div style="font-weight:700;">${item.name}</div>
+          <div style="font-size:11.5px; color:var(--text-muted);">${item.phone}</div>
+        </td>
+        <td>
+          <span style="display:inline-flex; align-items:center; gap:6px;">
+            <span>${item.categoryIcon}</span>
+            <span>${item.category}</span>
+          </span>
+        </td>
+        <td>
+          <div>${item.gov}</div>
+          <div style="font-size:11.5px; color:var(--text-muted);">${item.area}</div>
+        </td>
+        <td style="color:#64748b; font-size:12px;">${item.date}</td>
+        <td>
+          <span class="badge-priority ${isUrgent ? 'urgent' : 'normal'}">
+            <span>${isUrgent ? '⚡' : '•'}</span>
+            <span>${item.priority}</span>
+          </span>
+        </td>
+        <td>
+          <span class="badge-status ${statusClass}">
+            <span>${item.status === 'تم الحل' ? '✓' : item.status === 'جاري الفحص' ? '⏳' : '●'}</span>
+            <span>${item.status}</span>
+          </span>
+        </td>
+        <td>
+          <div class="action-btn-group">
+            <button class="action-btn primary" title="عرض كافة التفاصيل والمرفقات والتايم لاين" onclick="openDetailDrawer('${item.id}')">
+              👁️ عرض التفاصيل
+            </button>
+            <button class="action-btn" title="إحالة لجهة حكومية مختصة" onclick="openReferralModal('${item.id}')">
+              🔄 إحالة
+            </button>
+            <button class="action-btn" title="تغيير الحالة السريعة" onclick="quickToggleStatus('${item.id}')">
+              ⚙️ الحالة
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// Filtering and Searching
+function applyFilters() {
+  const status = document.getElementById('filterStatus').value;
+  const priority = document.getElementById('filterPriority').value;
+  const gov = document.getElementById('filterGov').value;
+  const search = document.getElementById('searchInput').value.trim().toLowerCase();
+
+  const filtered = complaints.filter(item => {
+    const matchStatus = status === 'ALL' || item.status === status;
+    const matchPriority = priority === 'ALL' || item.priority === priority;
+    const matchGov = gov === 'ALL' || item.gov === gov;
+    const matchSearch = !search || 
+      item.id.toLowerCase().includes(search) || 
+      item.name.toLowerCase().includes(search) || 
+      item.gov.toLowerCase().includes(search) || 
+      item.area.toLowerCase().includes(search) ||
+      item.category.toLowerCase().includes(search);
+
+    return matchStatus && matchPriority && matchGov && matchSearch;
+  });
+
+  renderComplaintsTable(filtered);
+}
+
+function handleSearch(val) {
+  applyFilters();
+}
+
+function resetFilters() {
+  document.getElementById('filterStatus').value = 'ALL';
+  document.getElementById('filterPriority').value = 'ALL';
+  document.getElementById('filterGov').value = 'ALL';
+  document.getElementById('searchInput').value = '';
+  applyFilters();
+  showToast('تم تحديث البيانات واستعادة العرض الافتراضي');
+}
+
+// Sidebar Navigation switcher
+function switchNav(type, btn) {
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const heading = document.getElementById('viewHeading');
+  const sub = document.getElementById('viewSub');
+
+  if (type === 'home') {
+    heading.textContent = 'مؤشرات الأداء ومتابعة البلاغات';
+    sub.textContent = 'نظرة عامة لحظية على موقف الشكاوى الواردة وتوزيعها الإقليمي والقطاعي';
+    resetFilters();
+  } else if (type === 'inbox') {
+    heading.textContent = 'صندوق البلاغات والشكاوى الواردة';
+    sub.textContent = 'استعراض كل الشكاوى المفتوحة والجديدة الموجهة لجهات الدولة';
+    document.getElementById('filterStatus').value = 'جديد';
+    applyFilters();
+  } else if (type === 'urgent') {
+    heading.textContent = 'غرفة الشكاوى والبلاغات العاجلة (خط أحمر)';
+    sub.textContent = 'الحالات التي تتطلب استجابة ميدانية فورية خلال أقل من 6 ساعات';
+    document.getElementById('filterPriority').value = 'عاجل';
+    document.getElementById('filterStatus').value = 'ALL';
+    applyFilters();
+  } else if (type === 'followup') {
+    heading.textContent = 'متابعة التنفيذ الميداني والإحالات الوزارية';
+    sub.textContent = 'البلاغات قيد التحقيق والمتابعة مع الوزارات والمحافظات';
+    document.getElementById('filterStatus').value = 'جاري الفحص';
+    applyFilters();
+  } else if (type === 'reports') {
+    heading.textContent = 'التقارير الإحصائية والتحليلات الجغرافية';
+    sub.textContent = 'بيانات قياس رضا المواطنين ومتوسط مدد الاستجابة لكل وزارة ومحافظة';
+    showToast('تم تجهيز التقارير التحليلية للربع السنوي');
+  } else if (type === 'settings') {
+    heading.textContent = 'إعدادات المنظومة وصلاحيات المتابعين';
+    sub.textContent = 'إدارة مسارات التصعيد، تنبيهات الـ SLA، والربط الإلكتروني مع الوزارات';
+  }
+}
+
+// Drawer Details & Quick Preview
+function openDetailDrawer(id) {
+  const item = complaints.find(c => c.id === id);
+  if (!item) return;
+
+  currentActiveComplaintId = id;
+  document.getElementById('drwId').textContent = `تفاصيل البلاغ ${item.id} - ${item.category}`;
+  document.getElementById('drwSubtitle').textContent = `تاريخ التقديم: ${item.date} | المحافظة: ${item.gov}`;
+  
+  document.getElementById('drwCitizen').textContent = item.name;
+  document.getElementById('drwContact').textContent = `${item.phone} (رقم قومي: ${item.nid})`;
+  document.getElementById('drwLocation').textContent = `${item.gov} - ${item.area}`;
+  document.getElementById('drwCategory').innerHTML = `
+    <span style="color:var(--blue); font-weight:800;">${item.categoryIcon} ${item.category}</span>
+    <span class="badge-priority ${item.priority === 'عاجل' ? 'urgent' : 'normal'}" style="margin-right:8px;">${item.priority}</span>
+  `;
+
+  document.getElementById('drwContent').textContent = item.body;
+  document.getElementById('drawerStatusSelect').value = item.status;
+
+  // Attachments
+  const attWrap = document.getElementById('drwAttachments');
+  if (item.attachments && item.attachments.length) {
+    attWrap.innerHTML = item.attachments.map(att => `
+      <div class="attachment-card" onclick="showToast('جاري فتح ومعاينة المستند: ${att.name}')">
+        <span style="font-size:20px;">${att.type === 'image' ? '🖼️' : '📄'}</span>
+        <div>
+          <div>${att.name}</div>
+          <div style="font-size:11px; color:var(--text-muted); font-weight:normal;">${att.size} • اضغط للمعاينة</div>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    attWrap.innerHTML = '<span style="font-size:12.5px; color:var(--text-muted);">لا توجد مرفقات ملحقة بهذا البلاغ.</span>';
+  }
+
+  // Timeline
+  const tlWrap = document.getElementById('drwTimeline');
+  if (item.timeline && item.timeline.length) {
+    tlWrap.innerHTML = item.timeline.map(node => `
+      <div class="timeline-node ${node.done ? 'done' : node.active ? 'active' : ''}">
+        <div class="timeline-time">${node.time}</div>
+        <div class="timeline-text">${node.step}</div>
+        <div class="timeline-sub">${node.sub}</div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('detailDrawerOverlay').style.display = 'flex';
+}
+
+function closeDetailDrawer() {
+  document.getElementById('detailDrawerOverlay').style.display = 'none';
+}
+
+function closeDrawerOnOutside(e) {
+  if (e.target.id === 'detailDrawerOverlay') {
+    closeDetailDrawer();
+  }
+}
+
+// Status Updates
+function updateSelectedStatus(newStatus) {
+  if (!currentActiveComplaintId) return;
+  const item = complaints.find(c => c.id === currentActiveComplaintId);
+  if (item) {
+    item.status = newStatus;
+    if (newStatus === 'تم الحل') {
+      item.timeline.push({
+        step: 'تم حسم الشكوى واعتماد النتيجة',
+        time: 'الآن',
+        done: true,
+        sub: 'قام المشرف بتحديث الحالة واعتماد الحل النهائي بنجاح.'
+      });
+    }
+    applyFilters();
+    openDetailDrawer(currentActiveComplaintId);
+    showToast(`تم تحديث حالة البلاغ ${item.id} إلى: ${newStatus}`);
+  }
+}
+
+function quickToggleStatus(id) {
+  const item = complaints.find(c => c.id === id);
+  if (!item) return;
+
+  const order = ['جديد', 'جاري الفحص', 'تم الحل'];
+  const nextIdx = (order.indexOf(item.status) + 1) % order.length;
+  item.status = order[nextIdx];
+  applyFilters();
+  showToast(`تم تغيير حالة البلاغ ${item.id} إلى (${item.status})`);
+}
+
+// Referral Modal logic
+function openReferralModal(id, isNewManual = false) {
+  currentActiveComplaintId = id;
+  const modal = document.getElementById('referralModal');
+  const title = modal.querySelector('h3');
+  if (isNewManual) {
+    title.textContent = 'تسجيل بلاغ هاتفي عاجل وإحالته';
+  } else if (id) {
+    title.textContent = `إحالة وتوجيه البلاغ رقم ${id}`;
+  }
+  modal.style.display = 'grid';
+}
+
+function closeReferralModal() {
+  document.getElementById('referralModal').style.display = 'none';
+  document.getElementById('refNote').value = '';
+}
+
+function confirmReferral() {
+  const entity = document.getElementById('refEntity').value;
+  const note = document.getElementById('refNote').value;
+  
+  if (currentActiveComplaintId) {
+    const item = complaints.find(c => c.id === currentActiveComplaintId);
+    if (item) {
+      item.status = 'جاري الفحص';
+      item.timeline.push({
+        step: `إحالة إلى: ${entity}`,
+        time: 'الآن',
+        active: true,
+        sub: note || 'تم التوجيه للمعاينة وإفادة غرفة العمليات المركزية.'
+      });
+      applyFilters();
+    }
+  }
+  closeReferralModal();
+  showToast(`تمت الإحالة بنجاح إلى: ${entity}`);
+}
+
+// Export Report Mock
+function exportData() {
+  showToast('جاري تصدير جدول البلاغات بصيغة Excel و PDF...');
+}
+
+// Toast notification helper
+function showToast(msg) {
+  const toast = document.getElementById('toastNotice');
+  toast.textContent = msg;
+  toast.style.display = 'block';
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => {
+    toast.style.display = 'none';
+  }, 3200);
+}
+
+// Kick off
+init();
+</script>
+</body>
+</html>
